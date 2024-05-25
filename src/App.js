@@ -12,15 +12,13 @@ function App() {
   const [textInput, setTextInput] = useState("");
 
   useEffect(() => {
-    const storageTodoList = localStorage.getItem(TODO_APP_STORAGE_KEY);
-    console.log(storageTodoList);
-    if (storageTodoList) {
-      setTodoList(JSON.parse(storageTodoList));
+    const storagedTodoList = localStorage.getItem(TODO_APP_STORAGE_KEY);
+    if (storagedTodoList) {
+      setTodoList(JSON.parse(storagedTodoList));
     }
   }, []);
 
   useEffect(() => {
-    console.log(todoList);
     localStorage.setItem(TODO_APP_STORAGE_KEY, JSON.stringify(todoList));
   }, [todoList]);
 
@@ -30,7 +28,6 @@ function App() {
   }, []);
 
   const onAddButtonClick = useCallback((e) => {
-
     setTodoList([{ id: v4(), name: textInput, isCompleted: false }, ...todoList]);
 
     setTextInput("");
@@ -38,8 +35,19 @@ function App() {
 
   const onCheckBtnClick = useCallback((id) => {
 
-    setTodoList(prevState => prevState.map(todo => todo.id === id ? {...todo, isCompleted: true} : todo));
+    setTodoList((prevState) => prevState.map((todo) => todo.id === id ? {...todo, isCompleted: true} : todo));
   }, []);
+
+  const onCrossBtnClick = useCallback((id) => {
+    var i;
+    for (i = 0; i < todoList.length; i++) {
+      if (todoList[i].id == id) {
+        break;
+      }
+    }
+    todoList.splice(i, 1);
+    setTodoList((prevState) => prevState.map((todo) => todo));
+  }, [todoList]);
 
   return (
     <>
@@ -49,15 +57,17 @@ function App() {
         placeholder="Thêm việc cần làm" 
         elemAfterInput={
         <Button 
-            isDisabled={!textInput} appearance="primary" onClick={onAddButtonClick}>
+          isDisabled={!textInput} appearance="primary" onClick={onAddButtonClick}
+          style={{ margin: "0 3px 0 0"}}
+        >
           Thêm
-          </Button>
+        </Button>
         }
-        css={{ padding: "2px 4px 2px" }}
+        css={{ padding: "2px 4px 2px 4px" }}
         value={textInput}
         onChange={onTextInputChange}
       ></Textfield>
-      <TodoList todoList={todoList} onCheckBtnClick={onCheckBtnClick}/>
+      <TodoList todoList={todoList} onCheckBtnClick={onCheckBtnClick} onCrossBtnClick={onCrossBtnClick}/>
     </>
     
   );

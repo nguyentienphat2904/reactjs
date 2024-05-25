@@ -12,7 +12,12 @@ body {
 }
 
 #root {
-  width: 100%;
+  width: 70%;
+  background-image: linear-gradient(to right top, #5ffbf1, #46eefa, #41dfff, #52cffe, #69bff8, #79b3f4, #8aa7ec, #9a9ae1, #aa8fd8, #ba83ca, #c777b9, #d16ba5);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px hsla(0, 0%, 0%, 0.5);
+  color: #982767;
 }
 
 code {
